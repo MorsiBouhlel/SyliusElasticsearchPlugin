@@ -26,10 +26,10 @@ final class SlugTransformer implements TransformerInterface
 
     public function transform(ProductInterface $product): ?string
     {
-        if (null === $product->getSlug()) {
+        if (null === $product->getCode()) {
             return null;
         }
 
-        return $this->router->generate('sylius_shop_product_show', ['slug' => $product->getSlug()]);
+        return $this->router->generate('api_products_shop_get_item', ['slug' => $product->getCode()]);
     }
 }
