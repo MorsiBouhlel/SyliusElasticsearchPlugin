@@ -16,6 +16,8 @@ final class Item
 {
     private string $taxonName;
 
+    private string $code;
+
     private string $name;
 
     private ?string $description;
@@ -28,6 +30,7 @@ final class Item
 
     public function __construct(
         string $taxonName,
+        string $code,
         string $name,
         ?string $description,
         string $slug,
@@ -35,6 +38,7 @@ final class Item
         ?string $image
     ) {
         $this->taxonName = $taxonName;
+        $this->code = $code;
         $this->name = $name;
         $this->description = $description;
         $this->slug = $slug;
@@ -45,6 +49,11 @@ final class Item
     public function taxonName(): string
     {
         return $this->taxonName;
+    }
+
+    public function code(): string
+    {
+        return $this->code;
     }
 
     public function name(): string
@@ -76,6 +85,7 @@ final class Item
     {
         return [
             'taxon_name' => $this->taxonName(),
+            'code' => $this->code(),
             'name' => $this->name(),
             'description' => $this->description() ?: '',
             'slug' => $this->slug(),
