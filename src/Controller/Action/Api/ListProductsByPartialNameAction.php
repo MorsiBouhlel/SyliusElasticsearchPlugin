@@ -61,6 +61,7 @@ final class ListProductsByPartialNameAction
 
             $itemsResponse->addItem(new Item(
                 $productMainTaxon->getName(),
+                $product->getCode(),
                 $product->getName(),
                 $product->getShortDescription(),
                 $this->productSlugTransformer->transform($product),
