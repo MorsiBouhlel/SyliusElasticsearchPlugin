@@ -30,6 +30,9 @@ final class SlugTransformer implements TransformerInterface
             return null;
         }
 
-        return $this->router->generate('api_products_shop_get_item', ['code' => $product->getCode()]);
+        $productTranslation = $product->getTranslation('fr_FR');
+        return $productTranslation->getSlug();
+
+        //return $this->router->generate('api_products_shop_get_item', ['code' => $product->getCode()]);
     }
 }
