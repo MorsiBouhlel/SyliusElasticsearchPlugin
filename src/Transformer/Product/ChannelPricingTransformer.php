@@ -64,9 +64,9 @@ final class ChannelPricingTransformer implements TransformerInterface
         if (null === $productVariantPricing) {
             return null;
         }
-
+        $price = !$productVariantPricing->getPrice() ? 0 : $productVariantPricing->getPrice();
         return $this->moneyFormatter->format(
-            $productVariantPricing->getPrice(),
+            $price,
             $channelBaseCurrency->getCode(),
             $this->localeContext->getLocaleCode()
         );
