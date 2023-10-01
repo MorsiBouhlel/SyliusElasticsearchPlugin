@@ -47,8 +47,8 @@ final class ContainsNameQueryBuilder implements QueryBuilderInterface
         $nameQuery = new MatchQuery();
 
         $nameQuery->setFieldQuery($propertyName, $name);
-        $nameQuery->setFieldFuzziness($propertyName, 2);
-        $nameQuery->setFieldMinimumShouldMatch($propertyName, 2);
+        $nameQuery->setFieldFuzziness($propertyName, 0);
+        $nameQuery->setFieldMinimumShouldMatch($propertyName, 0);
 
         return $nameQuery;
     }
