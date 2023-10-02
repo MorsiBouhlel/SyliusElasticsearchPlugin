@@ -44,11 +44,13 @@ final class ContainsNameQueryBuilder implements QueryBuilderInterface
             return null;
         }
 
-        $nameQuery = new MatchQuery();
+        $nameQuery = new MultiMatch();
 
-        $nameQuery->setFieldQuery($propertyName, $name);
-        $nameQuery->setFieldFuzziness($propertyName, 0);
-        $nameQuery->setFieldMinimumShouldMatch($propertyName, 0);
+        $nameQuery->setType('best_fields');
+        $nameQuery->setQuery($name);
+        $nameQuery->setFields([$propertyName]);
+        $nameQuery->setOperator('and');
+        $nameQuery->setFuzziness(1);
 
         return $nameQuery;
     }
