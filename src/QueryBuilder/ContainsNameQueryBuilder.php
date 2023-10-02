@@ -15,6 +15,7 @@ namespace BitBag\SyliusElasticsearchPlugin\QueryBuilder;
 use BitBag\SyliusElasticsearchPlugin\PropertyNameResolver\ConcatedNameResolverInterface;
 use Elastica\Query\AbstractQuery;
 use Elastica\Query\MatchQuery;
+use Elastica\Query\MultiMatch;
 use Sylius\Component\Locale\Context\LocaleContextInterface;
 
 final class ContainsNameQueryBuilder implements QueryBuilderInterface
