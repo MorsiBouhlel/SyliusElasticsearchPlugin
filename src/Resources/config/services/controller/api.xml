@@ -7,6 +7,14 @@
             <argument type="service" id="BitBag\SyliusElasticsearchPlugin\Transformer\Product\SlugTransformer" />
             <argument type="service" id="BitBag\SyliusElasticsearchPlugin\Transformer\Product\ChannelPricingTransformer" />
             <argument type="service" id="BitBag\SyliusElasticsearchPlugin\Transformer\Product\ImageTransformer" />
+            <argument type="service" id="Sylius\Bundle\ResourceBundle\Controller\RequestConfigurationFactoryInterface" />
+            <argument type="service">
+                <service class="Sylius\Component\Resource\Metadata\MetadataInterface">
+                    <factory service="sylius.resource_registry" method="get" />
+                    <argument type="string">sylius.product</argument>
+                </service>
+            </argument>
+            <argument type="service" id="Sylius\Bundle\ResourceBundle\Controller\ViewHandlerInterface" />
             <tag name="controller.service_arguments" />
         </service>
     </services>
