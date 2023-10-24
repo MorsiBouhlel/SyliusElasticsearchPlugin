@@ -16,12 +16,16 @@ use BitBag\SyliusElasticsearchPlugin\Controller\Response\DTO\Item;
 use BitBag\SyliusElasticsearchPlugin\Controller\Response\ItemsResponse;
 use BitBag\SyliusElasticsearchPlugin\Finder\NamedProductsFinderInterface;
 use BitBag\SyliusElasticsearchPlugin\Transformer\Product\TransformerInterface;
+use Sylius\Bundle\ResourceBundle\Controller\RequestConfigurationFactoryInterface;
+use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
+use Sylius\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Resource\Metadata\MetadataInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class ListProductsByPartialNameAction
+final class ListProductsByPartialNameAction extends ResourceController
 {
     private NamedProductsFinderInterface $namedProductsFinder;
 
@@ -31,16 +35,28 @@ final class ListProductsByPartialNameAction
 
     private TransformerInterface $productImageTransformer;
 
+    protected RequestConfigurationFactoryInterface $requestConfigurationFactory;
+
+    protected MetadataInterface $metadata;
+
+    protected ?ViewHandlerInterface $viewHandler;
+
     public function __construct(
         NamedProductsFinderInterface $namedProductsFinder,
         TransformerInterface $productSlugResolver,
         TransformerInterface $productChannelPriceResolver,
-        TransformerInterface $productImageResolver
+        TransformerInterface $productImageResolver,
+        RequestConfigurationFactoryInterface $requestConfigurationFactory,
+        MetadataInterface $metadata,
+        ViewHandlerInterface $viewHandler,
     ) {
         $this->namedProductsFinder = $namedProductsFinder;
         $this->productSlugTransformer = $productSlugResolver;
         $this->productChannelPriceTransformer = $productChannelPriceResolver;
         $this->productImageTransformer = $productImageResolver;
+        $this->requestConfigurationFactory = $requestConfigurationFactory;
+        $this->metadata = $metadata;
+        $this->viewHandler = $viewHandler;
     }
 
     public function __invoke(Request $request): Response
@@ -52,6 +68,13 @@ final class ListProductsByPartialNameAction
         }
 
         $products = $this->namedProductsFinder->findByNamePart($request->query->get('query'));
+
+        if ($request->query->get('type') && $request->query->get('type') == 'full') {
+            $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
+            $request->setRequestFormat('json');
+
+            return $this->createRestView($configuration, $products);
+        }
 
         /** @var ProductInterface $product */
         foreach ($products as $product) {
