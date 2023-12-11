@@ -16,6 +16,7 @@ use BitBag\SyliusElasticsearchPlugin\PropertyNameResolver\ConcatedNameResolverIn
 use Elastica\Query\AbstractQuery;
 use Elastica\Query\MatchQuery;
 use Elastica\Query\MultiMatch;
+use Elastica\Query\Wildcard;
 use Sylius\Component\Locale\Context\LocaleContextInterface;
 
 final class ContainsNameQueryBuilder implements QueryBuilderInterface
@@ -52,7 +53,8 @@ final class ContainsNameQueryBuilder implements QueryBuilderInterface
         $nameQuery->setFields([$propertyName]);
         $nameQuery->setOperator('and');
         $nameQuery->setFuzziness(1);
-
+        $nameQuery = new Wildcard($propertyName, "*".$name."*", 1);
+        
         return $nameQuery;
     }
 }
