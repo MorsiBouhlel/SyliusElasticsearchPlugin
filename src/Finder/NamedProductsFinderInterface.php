@@ -15,4 +15,6 @@ namespace BitBag\SyliusElasticsearchPlugin\Finder;
 interface NamedProductsFinderInterface
 {
     public function findByNamePart(string $namePart): ?array;
+
+    public function findAllByNamePart(string $namePart, int $limit): ?array;
 }
