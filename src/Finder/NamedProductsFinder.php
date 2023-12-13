@@ -36,4 +36,12 @@ final class NamedProductsFinder implements NamedProductsFinderInterface
 
         return $this->productsFinder->find($query);
     }
+
+    public function findAllByNamePart(string $namePart, int $limit): ?array
+    {
+        $data = ['name' => $namePart];
+        $query = $this->productsByPartialNameQueryBuilder->buildQuery($data);
+
+        return $this->productsFinder->find($query, $limit);
+    }
 }
