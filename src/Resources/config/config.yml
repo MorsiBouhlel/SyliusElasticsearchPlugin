@@ -16,6 +16,9 @@ parameters:
     bitbag_es_pagination_default_limit: 9
     bitbag_es_fuzziness: AUTO
 
+    bitbag_es_min_limit_search: 10
+    bitbag_es_max_limit_search: 2000
+
 fos_elastica:
     clients:
         default:
