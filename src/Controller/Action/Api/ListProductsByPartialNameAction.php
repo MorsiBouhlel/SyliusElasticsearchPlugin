@@ -43,6 +43,10 @@ final class ListProductsByPartialNameAction extends ResourceController
     protected MetadataInterface $metadata;
 
     protected ?ViewHandlerInterface $viewHandler;
+
+    protected int $minLimit;
+
+    protected int $maxLimit;
     
     public function __construct(
         NamedProductsFinderInterface $namedProductsFinder,
@@ -53,6 +57,8 @@ final class ListProductsByPartialNameAction extends ResourceController
         MetadataInterface $metadata,
         ViewHandlerInterface $viewHandler,
         ProductNormalizer $normalizer,
+        int $minLimit,
+        int $maxLimit,
     ) {
         $this->namedProductsFinder = $namedProductsFinder;
         $this->productSlugTransformer = $productSlugResolver;
@@ -62,6 +68,8 @@ final class ListProductsByPartialNameAction extends ResourceController
         $this->metadata = $metadata;
         $this->viewHandler = $viewHandler;
         $this->normalizer = $normalizer;
+        $this->minLimit = $minLimit;
+        $this->maxLimit = $maxLimit;
     }
 
     public function __invoke(Request $request): Response
@@ -77,7 +85,7 @@ final class ListProductsByPartialNameAction extends ResourceController
         $nProducts = [];
         if ($request->query->get('type') && $request->query->get('type') == 'full') {
             
-            $products = $this->namedProductsFinder->findAllByNamePart($request->query->get('query'), 2000);
+            $products = $this->namedProductsFinder->findAllByNamePart($request->query->get('query'), $this->maxLimit);
             
             foreach ($products as $product) {
                 $context['groups'] = 'shop:product:read';
@@ -91,7 +99,7 @@ final class ListProductsByPartialNameAction extends ResourceController
             return $this->viewHandler->handle($configuration, View::create($nProducts));
         }
 
-        $products = $this->namedProductsFinder->findByNamePart($request->query->get('query'));
+        $products = $this->namedProductsFinder->findAllByNamePart($request->query->get('query'), $this->minLimit);
         
         /** @var ProductInterface $product */
         foreach ($products as $product) {
