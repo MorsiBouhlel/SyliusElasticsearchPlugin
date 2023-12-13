@@ -73,9 +73,12 @@ final class ListProductsByPartialNameAction extends ResourceController
             return new JsonResponse($itemsResponse->toArray());
         }
 
-        $products = $this->namedProductsFinder->findByNamePart($request->query->get('query'));
+        
         $nProducts = [];
         if ($request->query->get('type') && $request->query->get('type') == 'full') {
+            
+            $products = $this->namedProductsFinder->findAllByNamePart($request->query->get('query'), 2000);
+            
             foreach ($products as $product) {
                 $context['groups'] = 'shop:product:read';
                 $nProducts [] = $this->normalizer->normalize($product, 'json', $context);
@@ -88,6 +91,8 @@ final class ListProductsByPartialNameAction extends ResourceController
             return $this->viewHandler->handle($configuration, View::create($nProducts));
         }
 
+        $products = $this->namedProductsFinder->findByNamePart($request->query->get('query'));
+        
         /** @var ProductInterface $product */
         foreach ($products as $product) {
             if (null === $productMainTaxon = $product->getMainTaxon()) {
