@@ -16,6 +16,8 @@
             </argument>
             <argument type="service" id="Sylius\Bundle\ResourceBundle\Controller\ViewHandlerInterface" />
             <argument type="service" id="App\Serializer\ProductNormalizer" />
+            <argument>%bitbag_es_min_limit_search%</argument>
+            <argument>%bitbag_es_max_limit_search%</argument>
             <tag name="controller.service_arguments" />
         </service>
     </services>
