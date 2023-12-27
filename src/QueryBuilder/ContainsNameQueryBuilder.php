@@ -46,15 +46,17 @@ final class ContainsNameQueryBuilder implements QueryBuilderInterface
             return null;
         }
 
-        $nameQuery = new MultiMatch();
-
-        $nameQuery->setType('best_fields');
-        $nameQuery->setQuery($name);
-        $nameQuery->setFields([$propertyName]);
-        $nameQuery->setOperator('and');
-        $nameQuery->setFuzziness(1);
-        $nameQuery = new Wildcard($propertyName, "*".$name."*", 1);
-        
+        if (count(explode(" ", $name)) > 1) {
+            $nameQuery = new SimpleQueryString($name);
+            $nameQuery->setQuery("*".$name."*");
+            $nameQuery->setDefaultOperator("AND");
+            $nameQuery->setFields([$propertyName]);
+        } else {
+            $nameQuery = new QueryString();
+            $nameQuery->setQuery("*".$name."*");
+            $nameQuery->setAnalyzeWildcard(true);
+            $nameQuery->setFields([$propertyName]);
+        }
         return $nameQuery;
     }
 }
