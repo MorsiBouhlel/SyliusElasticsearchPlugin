@@ -17,6 +17,8 @@ use Elastica\Query\AbstractQuery;
 use Elastica\Query\MatchQuery;
 use Elastica\Query\MultiMatch;
 use Elastica\Query\Wildcard;
+use Elastica\Query\QueryString;
+use Elastica\Query\SimpleQueryString;
 use Sylius\Component\Locale\Context\LocaleContextInterface;
 
 final class ContainsNameQueryBuilder implements QueryBuilderInterface
