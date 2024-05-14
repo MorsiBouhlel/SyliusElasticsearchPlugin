@@ -91,7 +91,7 @@ final class ListProductsByPartialNameAction extends ResourceController
             foreach ($products as $product) {
                 $context['groups'] = 'shop:product:read';
                 $nProducts [] = $this->normalizer->normalize($product, 'json', $context);
-                fputcsv($file, [$request->query->get('type'),$request->query->get('query'), $product->getCode(), $product->getName(),  $this->productChannelPriceTransformer->transform($product), date('d-m-Y h:i:s', time())], ";");
+                fputcsv($file, [$request->query->get('type'),$request->query->get('query'), count($products), $product->getCode(), $product->getName(),  $this->productChannelPriceTransformer->transform($product), date('d-m-Y h:i:s', time())], ";");
             }
 
             $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
@@ -108,7 +108,7 @@ final class ListProductsByPartialNameAction extends ResourceController
             if (null === $productMainTaxon = $product->getMainTaxon()) {
                 continue;
             }
-            fputcsv($file, [$request->query->get('type'),$request->query->get('query'), $product->getCode(), $product->getName(),  $this->productChannelPriceTransformer->transform($product), date('d-m-Y h:i:s', time())], ";");
+            fputcsv($file, [$request->query->get('type'),$request->query->get('query'), count($products),$product->getCode(), $product->getName(),  $this->productChannelPriceTransformer->transform($product), date('d-m-Y h:i:s', time())], ";");
             $itemsResponse->addItem(new Item(
                 $productMainTaxon->getName(),
                 $product->getCode(),
