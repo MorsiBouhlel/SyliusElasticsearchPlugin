@@ -81,7 +81,7 @@ final class ListProductsByPartialNameAction extends ResourceController
             return new JsonResponse($itemsResponse->toArray());
         }
 
-        $file = fopen("/srv/sylius/public/es_logs.txt","w+");
+        $file = fopen("/srv/sylius/public/es_logs.txt","a");
         
         $nProducts = [];
         if ($request->query->get('type') && $request->query->get('type') == 'full') {
