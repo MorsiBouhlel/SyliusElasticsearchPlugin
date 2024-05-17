@@ -50,7 +50,14 @@ final class ContainsNameQueryBuilder implements QueryBuilderInterface
 
         if (count(explode(" ", $name)) > 1) {
             $nameQuery = new SimpleQueryString($name);
-            $nameQuery->setQuery("*".$name."*");
+            
+            $nameList = explode(" ", $name);
+
+            array_walk($nameList, function (&$value, $key){
+                $value = "*".$value."*";
+            });
+
+            $nameQuery->setQuery(implode(" ", $nameList));
             $nameQuery->setDefaultOperator("AND");
             $nameQuery->setFields([$propertyName]);
         } else {
