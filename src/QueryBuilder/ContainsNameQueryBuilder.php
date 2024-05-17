@@ -57,7 +57,7 @@ final class ContainsNameQueryBuilder implements QueryBuilderInterface
                 $value = "*".$value."*";
             });
 
-            $nameQuery->setQuery(implode(" ", $nameList));
+            $nameQuery->setQuery(implode("", $nameList));
             $nameQuery->setDefaultOperator("AND");
             $nameQuery->setFields([$propertyName]);
         } else {
